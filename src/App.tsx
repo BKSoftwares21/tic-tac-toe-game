@@ -1,10 +1,12 @@
 import Grid from './components/Grid'
-function App() {
+
+const App:React.FC =() => {
 
 
   return (
     <>
-      <Grid/>
+    <div className='App'><Grid/></div>
+      
         
     </>
   )

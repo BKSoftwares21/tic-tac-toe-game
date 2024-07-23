@@ -38,13 +38,14 @@ const Board: React.FC<BoardProps> = ({ xIsNext, squares, onPlay }) => {
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = 'Winner: ' + winner;
+    status = winner === 'Draw' ? 'It\'s a Draw!' : 'Winner: ' + winner;
   } else {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
 
   return (
     <>
+    <h1>Welcome to the tic-tac-toe Game</h1>
       <div className="status">{status}</div>
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
@@ -66,42 +67,26 @@ const Board: React.FC<BoardProps> = ({ xIsNext, squares, onPlay }) => {
 };
 
 const Game: React.FC = () => {
-  const [history, setHistory] = useState<(string | null)[][]>([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
+  const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState(true);
 
   function handlePlay(nextSquares: (string | null)[]) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    setHistory(nextHistory);
-    setCurrentMove(nextHistory.length - 1);
+    setSquares(nextSquares);
+    setXIsNext(!xIsNext);
   }
 
-  function jumpTo(nextMove: number) {
-    setCurrentMove(nextMove);
+  function resetGame() {
+    setSquares(Array(9).fill(null));
+    setXIsNext(true);
   }
-
-  const moves = history.map((squares, move) => {
-    let description;
-    if (move > 0) {
-      description = 'Go to move #' + move;
-    } else {
-      description = 'Go to game start';
-    }
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
-      </li>
-    );
-  });
 
   return (
     <div className="game">
       <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+        <Board xIsNext={xIsNext} squares={squares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
-        <ol>{moves}</ol>
+        <button className="reset-button" onClick={resetGame}>Reset Game</button>
       </div>
     </div>
   );
@@ -127,5 +112,10 @@ function calculateWinner(squares: (string | null)[]) {
       return squares[a];
     }
   }
+
+  if (squares.every(square => square !== null)) {
+    return 'Draw';
+  }
+
   return null;
 }
