@@ -1,15 +1,19 @@
-import Game from './components/Game'
+// src/App.tsx
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import GamePage from './pages/GamePage';
+import ScoreboardPage from './pages/ScoreboardPage';
+import './Game.css'; // Import your CSS file here
 
-const App:React.FC =() => {
+const App: React.FC = () => (
+  <Router>
+    <Routes>
+      <Route path="/scoreboard" Component={ScoreboardPage} />
+      <Route path="/" Component={GamePage} />
+    </Routes>
+  </Router>
+);
+
+export default App;
 
 
-  return (
-    <>
-    <div className='App'><Game/></div>
-      
-        
-    </>
-  )
-}
-
-export default App
