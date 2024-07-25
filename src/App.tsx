@@ -1,11 +1,11 @@
-import Grid from './components/Grid'
+import Game from './components/Game'
 
 const App:React.FC =() => {
 
 
   return (
     <>
-    <div className='App'><Grid/></div>
+    <div className='App'><Game/></div>
       
         
     </>

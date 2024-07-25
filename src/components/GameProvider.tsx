@@ -1,5 +1,6 @@
 // src/components/GameProvider.tsx
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
+import calculateWinner from '../utils/CalculateWinner';
 
 interface GameContextType {
   squares: (string | null)[];
@@ -12,7 +13,12 @@ interface GameContextType {
 
 export const GameContext = createContext<GameContextType | undefined>(undefined);
 
-export const GameProvider: React.FC = ({ children }) => {
+// Define the props for GameProvider
+interface GameProviderProps {
+  children: ReactNode;
+}
+
+export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
   const [xScore, setXScore] = useState(0);
@@ -23,7 +29,7 @@ export const GameProvider: React.FC = ({ children }) => {
     if (winner) {
       if (winner === 'X') setXScore(xScore + 1);
       if (winner === 'O') setOScore(oScore + 1);
-      setSquares(Array(9).fill(null));  // Reset the board after a win
+      setSquares(Array(9).fill(null)); // Reset the board after a win
     } else {
       setSquares(nextSquares);
       setXIsNext(!xIsNext);

@@ -1,4 +1,5 @@
 // src/components/Game.tsx
+import { useContext } from 'react';
 import React from 'react';
 import Board from './Board';
 import { GameProvider, GameContext } from './GameProvider';

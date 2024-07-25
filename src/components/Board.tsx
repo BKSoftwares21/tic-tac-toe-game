@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import Square from './Square';
 import { GameContext } from './GameProvider';
-import calculateWinner from '../utils/calculateWinner';
+import CalculateWinner from '../utils/CalculateWinner';
 
 const Board: React.FC = () => {
   const gameContext = useContext(GameContext);
@@ -11,7 +11,7 @@ const Board: React.FC = () => {
   }
   const { squares, xIsNext } = gameContext;
 
-  const winner = calculateWinner(squares);
+  const winner = CalculateWinner(squares);
   let status;
   if (winner) {
     status = winner === 'Draw' ? "It's a Draw!" : 'Winner: ' + winner;

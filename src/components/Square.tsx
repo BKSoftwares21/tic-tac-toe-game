@@ -1,6 +1,7 @@
 // src/components/Square.tsx
 import React, { useContext } from 'react';
 import { GameContext } from './GameProvider';
+import calculateWinner from '../utils/CalculateWinner';
 
 interface SquareProps {
   index: number;
