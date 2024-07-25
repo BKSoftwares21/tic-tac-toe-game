@@ -1,24 +1,29 @@
-// src/components/Game.tsx
-import { useContext } from 'react';
-import React from 'react';
+import React, { useContext } from 'react';
 import Board from './Board';
-import { GameProvider, GameContext } from './GameProvider';
-import './Game.css';
+import { GameContext } from './GameProvider';
+import '../styles/Game.css';
 
 const Game: React.FC = () => {
   const gameContext = useContext(GameContext);
 
+  if (!gameContext) {
+    throw new Error('GameContext must be used within a GameProvider');
+  }
+
   return (
-    <GameProvider>
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">
-          <button className="reset-button" onClick={gameContext?.resetGame}>Reset Game</button>
-        </div>
+    <div className="game">
+        <h1>Welcome to Tic-Tac-Toe</h1>
+      <div className="game-board">
+        <Board />
       </div>
-    </GameProvider>
+      <div className="game-info">
+        <div className="scoreboard">
+          <div className="score">X: {gameContext.xScore}</div>
+          <div className="score">O: {gameContext.oScore}</div>
+        </div>
+        <button className="reset-button" onClick={gameContext.resetGame}>Reset Game</button>
+      </div>
+    </div>
   );
 };
 
