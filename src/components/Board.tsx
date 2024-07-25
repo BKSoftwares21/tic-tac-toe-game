@@ -1,41 +1,51 @@
-// src/components/Board.tsx
-import React, { useContext } from 'react';
+import React from 'react';
 import Square from './Square';
-import { GameContext } from './GameProvider';
-import CalculateWinner from '../utils/CalculateWinner';
+import { calculateWinner } from '../utils/CalculateWinner';
+import '../styles/Game.css';
 
-const Board: React.FC = () => {
-  const gameContext = useContext(GameContext);
-  if (!gameContext) {
-    throw new Error('Board must be used within a GameProvider');
+interface BoardProps {
+  xIsNext: boolean;
+  squares: (string | null)[];
+  onPlay: (squares: (string | null)[]) => void;
+}
+
+const Board: React.FC<BoardProps> = ({ xIsNext, squares, onPlay }) => {
+  function handleClick(i: number) {
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+
+    const nextSquares = squares.slice();
+    nextSquares[i] = xIsNext ? 'X' : 'O';
+    onPlay(nextSquares);
   }
-  const { squares, xIsNext } = gameContext;
 
-  const winner = CalculateWinner(squares);
+  const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = winner === 'Draw' ? "It's a Draw!" : 'Winner: ' + winner;
+    status = winner === 'Draw' ? 'It\'s a Draw!' : 'Winner: ' + winner;
   } else {
     status = 'Next player: ' + (xIsNext ? 'X' : 'O');
   }
 
   return (
     <>
+      <h1>Welcome to the tic-tac-toe Game</h1>
       <div className="status">{status}</div>
       <div className="board-row">
-        <Square index={0} />
-        <Square index={1} />
-        <Square index={2} />
+        <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+        <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+        <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
       </div>
       <div className="board-row">
-        <Square index={3} />
-        <Square index={4} />
-        <Square index={5} />
+        <Square value={squares[3]} onSquareClick={() => handleClick(3)} />
+        <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+        <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
       </div>
       <div className="board-row">
-        <Square index={6} />
-        <Square index={7} />
-        <Square index={8} />
+        <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+        <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+        <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
       </div>
     </>
   );

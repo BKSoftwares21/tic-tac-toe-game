@@ -1,6 +1,6 @@
 // src/components/GameProvider.tsx
 import React, { createContext, useState, ReactNode } from 'react';
-import calculateWinner from '../utils/CalculateWinner';
+import { calculateWinner } from '../utils/CalculateWinner';
 
 interface GameContextType {
   squares: (string | null)[];

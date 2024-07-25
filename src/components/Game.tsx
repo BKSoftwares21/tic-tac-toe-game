@@ -1,30 +1,45 @@
-// src/components/Game.tsx
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import Board from './Board';
-import { GameContext } from './GameProvider';
 import '../styles/Game.css';
+import { calculateWinner } from '../utils/CalculateWinner';
 
 const Game: React.FC = () => {
-  const gameContext = useContext(GameContext);
-
-  if (!gameContext) {
-    throw new Error('Game must be used within a GameProvider');
-  }
-
-  const { resetGame } = gameContext;
-
-  return (
-    <div className="game">
-      <div className="game-board">
-        <Board />
+    const [squares, setSquares] = useState<(string | null)[]>(Array(9).fill(null));
+    const [xIsNext, setXIsNext] = useState(true);
+    const [xScore, setXScore] = useState(0);
+    const [oScore, setOScore] = useState(0);
+  
+    function handlePlay(nextSquares: (string | null)[]) {
+      setSquares(nextSquares);
+      setXIsNext(!xIsNext);
+  
+      const winner = calculateWinner(nextSquares);
+      if (winner === 'X') {
+        setXScore(xScore + 1);
+      } else if (winner === 'O') {
+        setOScore(oScore + 1);
+      }
+    }
+  
+    function resetGame() {
+      setSquares(Array(9).fill(null));
+      setXIsNext(true);
+    }
+  
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board xIsNext={xIsNext} squares={squares} onPlay={handlePlay} />
+        </div>
+        <div className="game-info">
+          <div className="scoreboard">
+            <div className="score">X: {xScore}</div>
+            <div className="score">O: {oScore}</div>
+          </div>
+          <button className="reset-button" onClick={resetGame}>Reset Game</button>
+        </div>
       </div>
-      <div className="game-info">
-        <button onClick={resetGame}>Reset</button>
-      </div>
-      <Link to="/scoreboard">Go to Scoreboard</Link>
-    </div>
-  );
-};
-
-export default Game;
+    );
+  };
+  
+  export default Game;
