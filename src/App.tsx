@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import GamePage from './pages/GamePage';
 import ScoreboardPage from './pages/ScoreboardPage';
-import './Game.css'; // Import your CSS file here
+import './styles/Game.css'; 
 
 const App: React.FC = () => (
   <Router>

@@ -1,24 +1,29 @@
 // src/components/Game.tsx
-import { useContext } from 'react';
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import Board from './Board';
-import { GameProvider, GameContext } from './GameProvider';
-import './Game.css';
+import { GameContext } from './GameProvider';
+import '../styles/Game.css';
 
 const Game: React.FC = () => {
   const gameContext = useContext(GameContext);
 
+  if (!gameContext) {
+    throw new Error('Game must be used within a GameProvider');
+  }
+
+  const { resetGame } = gameContext;
+
   return (
-    <GameProvider>
-      <div className="game">
-        <div className="game-board">
-          <Board />
-        </div>
-        <div className="game-info">
-          <button className="reset-button" onClick={gameContext?.resetGame}>Reset Game</button>
-        </div>
+    <div className="game">
+      <div className="game-board">
+        <Board />
       </div>
-    </GameProvider>
+      <div className="game-info">
+        <button onClick={resetGame}>Reset</button>
+      </div>
+      <Link to="/scoreboard">Go to Scoreboard</Link>
+    </div>
   );
 };
 
